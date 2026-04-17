@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EEE 2.1 - Iron Man Nano Gauntlet</title>
+    <style>
+        :root {
+            --stark-gold: #fbc02d;
+            --iron-red: #b71c1c;
+        }
+
+        body {
+            margin: 0; padding: 0;
+            background: #050505;
+            color: #fff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex; flex-direction: column; align-items: center;
+            min-height: 100vh;
+        }
+
+        .header h1 {
+            color: var(--stark-gold);
+            letter-spacing: 4px;
+            font-size: 1.4rem;
+            margin: 20px 0;
+            text-shadow: 0 0 10px rgba(251, 192, 45, 0.5);
+        }
+
+        /* The Realistic Gauntlet Container */
+        .gauntlet-wrapper {
+            position: relative;
+            width: 350px;
+            height: 450px;
+            background: url('image_712cad.jpg') no-repeat center center; /* Update with your file name */
+            background-size: contain;
+            margin-bottom: 20px;
+        }
+
+        /* Stone Base Style */
+        .stone {
+            position: absolute;
+            cursor: pointer;
+            border-radius: 50%;
+            transition: 0.3s;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.5rem; font-weight: bold;
+            opacity: 0.4; /* Sits subtly until clicked or hovered */
+        }
+        .stone:hover { opacity: 1; transform: scale(1.1); }
+        .active-stone { opacity: 1; animation: pulse 1.5s infinite; }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 5px currentColor; }
+            50% { box-shadow: 0 0 20px currentColor; }
+            100% { box-shadow: 0 0 5px currentColor; }
+        }
+
+        /* Precise Positioning based on your image */
+        /* Space Stone (Blue) */
+        .s1 { top: 43.5%; left: 38.5%; width: 32px; height: 42px; color: #4fc3f7; }
+        /* Power Stone (Purple) */
+        .s2 { top: 46%; left: 27%; width: 32px; height: 42px; color: #ba68c8; }
+        /* Reality Stone (Red) */
+        .s3 { top: 45%; left: 50%; width: 32px; height: 42px; color: #ef5350; }
+        /* Soul Stone (Orange) */
+        .s4 { top: 50%; left: 63%; width: 30px; height: 40px; color: #ffb74d; }
+        /* Time Stone (Green) - Hidden on thumb/side in this angle, let's keep it visible nearby */
+        .s5 { top: 65%; left: 24%; width: 25px; height: 35px; color: #81c784; }
+
+        /* Mind Stone (Yellow - Large Center) */
+        .mind-stone {
+            position: absolute;
+            top: 55%; left: 40%;
+            width: 70px; height: 90px;
+            cursor: pointer;
+            z-index: 10;
+            border-radius: 50%;
+            opacity: 0.2;
+        }
+        .mind-stone:hover { opacity: 0.5; background: rgba(255, 235, 59, 0.2); }
+
+        /* HUD Card */
+        .info-card {
+            width: 90%; max-width: 400px;
+            padding: 20px;
+            border: 1px solid rgba(251, 192, 45, 0.3);
+            background: rgba(10, 10, 10, 0.85);
+            backdrop-filter: blur(10px);
+            border-radius: 5px;
+            display: none;
+            margin-bottom: 40px;
+            position: relative;
+        }
+        .info-card::before {
+            content: "ARCHIVE_DATA_LOADED";
+            position: absolute; top: -10px; left: 10px;
+            background: #000; color: var(--stark-gold);
+            font-size: 0.6rem; padding: 0 5px;
+        }
+
+        .details-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px;
+        }
+        .box { border-left: 2px solid var(--stark-gold); padding-left: 10px; text-align: left; margin-bottom: 10px; }
+        .box small { color: #888; display: block; font-size: 0.7rem; }
+        .box b { font-size: 0.85rem; }
+
+        .drive-btn {
+            display: block; margin-top: 15px; padding: 12px;
+            border: 1px solid var(--stark-gold); color: var(--stark-gold);
+            text-decoration: none; font-weight: bold; font-size: 0.8rem;
+            text-align: center; transition: 0.3s;
+        }
+        .drive-btn:hover { background: var(--stark-gold); color: #000; }
+
+        /* Full Routine Modal */
+        #routineModal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95); z-index: 1000; overflow-y: auto; padding: 20px;
+        }
+        .routine-item {
+            border-bottom: 1px solid rgba(255,255,255,0.1); padding: 15px 0;
+            display: flex; justify-content: space-between;
+        }
+        .close-btn { margin: 20px auto; display: block; background: none; border: 1px solid #ff5252; color: #ff5252; padding: 10px 20px; cursor: pointer; }
+
+        .footer { font-size: 0.7rem; color: #555; padding: 20px; text-align: center; width: 100%; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>STARK INDUSTRIES DATA PORTAL</h1>
+    </div>
+
+    <div class="gauntlet-wrapper">
+        <div class="stone s1" onclick="loadCourse(0)"></div>
+        <div class="stone s2" onclick="loadCourse(1)"></div>
+        <div class="stone s3" onclick="loadCourse(2)"></div>
+        <div class="stone s4" onclick="loadCourse(3)"></div>
+        <div class="stone s5" onclick="loadCourse(4)"></div>
+
+        <div class="mind-stone" onclick="openRoutine()"></div>
+    </div>
+
+    <div id="infoCard" class="info-card">
+        <h2 id="title" style="margin:0; font-size: 1.1rem; color: var(--stark-gold);">SUBJECT_LOAD...</h2>
+        <div class="details-grid">
+            <div class="box"><small>TIMELINE</small><span id="dateText">-</span></div>
+            <div class="box"><small>DURATION</small><span id="timeText">-</span></div>
+            <div class="box"><small>DAY_CYCLE</small><span id="dayText">-</span></div>
+            <div class="box"><small>LOCATION</small><span>AUST_CAMPUS</span></div>
+        </div>
+        <a id="driveBtn" href="#" target="_blank" class="drive-btn">INITIALIZE MATERIAL DOWNLOAD</a>
+    </div>
+
+    <div id="routineModal">
+        <h2 style="text-align:center; color:var(--stark-gold);">FULL MISSION SCHEDULE</h2>
+        <div id="fullList" style="max-width: 500px; margin: 0 auto;"></div>
+        <button class="close-btn" onclick="closeModal()">ABORT_VIEW</button>
+    </div>
+
+    <div class="footer">
+        PROJECT: EEE 2.1 | CODENAME: RATUL MOJUMDER
+    </div>
+
+    <script>
+        const courseData = [
+            { name: "Electrical Machineries", date: "May 03, 2026", time: "09:30 AM-12:00 PM", day: "Sunday", link: "https://drive.google.com/drive/folders/1VpU2gqtwiapRvBhHxeXenZraFj9seVK1", color: "#ef5350" },
+            { name: "Digital Circuit Design", date: "May 06, 2026", time: "09:30 AM-12:00 PM", day: "Wednesday", link: "https://drive.google.com/drive/folders/1rQV9WMWOJKGwlUjHBhig3fMik9SNFbIB", color: "#fbc02d" },
+            { name: "Mathematics-IV", date: "May 11, 2026", time: "09:30 AM-12:00 PM", day: "Monday", link: "https://drive.google.com/drive/folders/1QpfegRbmSES0cPU5A2u8ThztCIDnbQhV", color: "#81c784" },
+            { name: "Mechanical Eng.", date: "May 17, 2026", time: "09:30 AM-12:00 PM", day: "Sunday", link: "https://drive.google.com/drive/folders/1lpebIYMXh4wugawWNpYKtkOnF-eMYO-0", color: "#4fc3f7" },
+            { name: "Technical English", date: "May 20, 2026", time: "09:30 AM-12:00 PM", day: "Wednesday", link: "https://drive.google.com/drive/folders/1pikfV-sZeGvZBv_RTFtm-aUmRC9VgvR7", color: "#ba68c8" }
+        ];
+
+        function loadCourse(id) {
+            const course = courseData[id];
+            const card = document.getElementById('infoCard');
+            card.style.display = 'block';
+            card.style.borderColor = course.color;
+            
+            document.getElementById('title').innerText = course.name.toUpperCase();
+            document.getElementById('dateText').innerText = course.date;
+            document.getElementById('timeText').innerText = course.time;
+            document.getElementById('dayText').innerText = course.day;
+            document.getElementById('driveBtn').href = course.link;
+
+            // Highlight active stone
+            document.querySelectorAll('.stone').forEach(s => s.classList.remove('active-stone'));
+            document.querySelector(`.s${id+1}`).classList.add('active-stone');
+            
+            card.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function openRoutine() {
+            const modal = document.getElementById('routineModal');
+            const list = document.getElementById('fullList');
+            modal.style.display = 'block';
+            list.innerHTML = courseData.map(c => `
+                <div class="routine-item">
+                    <span><b>${c.name}</b><br><small>${c.date}</small></span>
+                    <span style="text-align:right; font-size:0.8rem; color:var(--stark-gold)">${c.day}<br>${c.time}</span>
+                </div>
+            `).join('');
+        }
+
+        function closeModal() { document.getElementById('routineModal').style.display = 'none'; }
+    </script>
+</body>
+</html>
