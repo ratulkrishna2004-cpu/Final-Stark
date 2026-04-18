@@ -6,15 +6,13 @@
     <title>EEE 2.1 Exam Dashboard</title>
     <style>
         :root {
-            --glass: rgba(255, 255, 255, 0.1);
-            --border: rgba(255, 255, 255, 0.2);
             --lightning: #00d4ff;
         }
 
         body {
             margin: 0; padding: 0;
             font-family: 'Segoe UI', Arial, sans-serif;
-            background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.95)), 
+            background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.95)), 
                         url('./varsity-bg.jpg') no-repeat center center fixed;
             background-size: cover;
             color: #fff;
@@ -23,28 +21,27 @@
         }
 
         .header h1 { 
-            margin-top: 25px; 
+            margin-top: 40px; 
             font-size: 2rem; 
             text-align: center;
-            letter-spacing: 2px;
-            text-shadow: 0 0 20px var(--lightning);
+            letter-spacing: 1.5px;
+            text-shadow: 0 0 15px var(--lightning);
             font-weight: 800;
         }
         
         .wheel-container {
             position: relative;
-            width: 320px; height: 320px;
-            /* Large gap between title and wheel to accommodate massive hammer */
-            margin-top: 150px; 
+            width: 350px; height: 350px;
+            /* Creating enough space for the hammer to fit in the gap */
+            margin-top: 220px; 
             margin-bottom: 50px;
             display: flex;
             justify-content: center;
             align-items: center;
-            perspective: 1000px; /* 3D effect foundation */
         }
 
         @media (min-width: 768px) {
-            .wheel-container { width: 450px; height: 450px; margin-top: 200px; }
+            .wheel-container { width: 450px; height: 450px; margin-top: 250px; }
         }
 
         .wheel {
@@ -53,9 +50,9 @@
             border-radius: 50%;
             overflow: hidden;
             border: 6px solid rgba(255,255,255,0.2);
-            box-shadow: 0 0 30px rgba(0,0,0,0.8);
+            box-shadow: 0 0 40px rgba(0,0,0,0.9);
             transition: transform 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            z-index: 10; /* Lower z-index so hammer is in background/middle ground */
+            z-index: 10;
         }
 
         .segment {
@@ -76,77 +73,77 @@
             transform: skewY(18deg) rotate(-45deg);
             position: absolute;
             font-weight: 900;
-            text-align: center;
-            width: 75px;
-            right: 15px; top: 40px;
-            font-size: 0.8rem;
-            color: #fff;
+            width: 80px;
+            right: 20px; top: 40px;
+            font-size: 0.85rem;
         }
 
-        /* --- Thor's Hammer: GIGANTIC, Left, Up, ALWAYS Lighting --- */
-        .hammer-overlay {
+        /* --- Hammer Fixed Size & Position --- */
+        .hammer-box {
             position: absolute;
-            width: 1200px; /* Gigantic Size: 4x previous size (approx 300px * 4) */
-            height: 1200px;
-            /* Positioning: Far Up, slightly to the Left of center */
-            top: -550px; 
-            left: calc(50% - 700px); /* Centers and then moves left */
-            z-index: 5; /* Lower than wheel so wheel rotates OVER it */
-            pointer-events: none; /* Allows interacting with the wheel below */
+            /* Positioned in the gap */
+            top: -200px; 
+            left: calc(50% - 220px); /* Slightly moved to the left */
+            width: 350px; /* Reduced from 1200px to a balanced size */
+            height: 350px;
+            z-index: 5;
+            pointer-events: none;
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: visible; /* Allows lighting overflow */
+        }
+
+        @media (min-width: 768px) {
+            .hammer-box { width: 420px; height: 420px; top: -230px; left: calc(50% - 280px); }
         }
 
         .hammer-img {
             width: 100%;
             height: 100%;
             object-fit: contain;
-            /* Massive Lighting Effect: ALWAYS on, flickering */
-            filter: drop-shadow(0 0 30px var(--lightning)) brightness(1.2); 
-            animation: lightning-strike 0.15s infinite alternate;
+            filter: drop-shadow(0 0 20px var(--lightning));
+            animation: lighting-strike 0.15s infinite alternate, floating 3s ease-in-out infinite;
         }
 
-        /* Continuous Lighting Animation (Always running) */
-        @keyframes lightning-strike {
-            0% { filter: drop-shadow(0 0 25px var(--lightning)) brightness(1.2); }
-            100% { filter: drop-shadow(0 0 50px #fff) brightness(1.4); }
+        @keyframes lighting-strike {
+            0% { filter: drop-shadow(0 0 10px var(--lightning)) brightness(1.1); }
+            100% { filter: drop-shadow(0 0 30px #fff) brightness(1.4); }
+        }
+
+        @keyframes floating {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(2deg); }
         }
 
         .routine-btn {
             position: absolute;
-            width: 75px; height: 75px;
-            background: rgba(255,255,255,0.8); color: #1a1a1a;
-            border-radius: 50%; border: 3px solid #000;
+            width: 80px; height: 80px;
+            background: #fff; color: #000;
+            border-radius: 50%; border: 4px solid #000;
             cursor: pointer; font-weight: 900;
-            z-index: 20; /* Highest z-index */
-            font-size: 0.65rem;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+            z-index: 30;
+            font-size: 0.7rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
             top: 50%; left: 50%;
             transform: translate(-50%, -50%);
         }
 
-        /* Info Card */
         .info-card {
-            width: 85%; max-width: 460px;
+            width: 85%; max-width: 480px;
             padding: 20px; border-radius: 20px;
-            backdrop-filter: blur(25px);
+            backdrop-filter: blur(20px);
             text-align: center; display: none;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.7);
             margin-bottom: 50px;
-            border: 1px solid var(--border);
-            background: rgba(0,0,0,0.5);
-            animation: popIn 0.5s ease;
+            border: 1px solid rgba(255,255,255,0.15);
+            background: rgba(0,0,0,0.6);
         }
 
         .details-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 15px 0; }
-        .box { background: rgba(0,0,0,0.4); padding: 10px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); }
-        .drive-btn { display: block; padding: 14px; background: #fff; color: #000; text-decoration: none; border-radius: 30px; font-weight: bold; font-size: 0.9rem; }
-        .drive-btn:hover { background: #eee; transform: translateY(-2px); }
+        .box { background: rgba(255,255,255,0.05); padding: 10px; border-radius: 12px; }
+        .drive-btn { display: block; padding: 15px; background: #fff; color: #000; text-decoration: none; border-radius: 30px; font-weight: 800; }
 
-        .footer { margin-top: auto; padding: 15px; width: 100%; text-align: center; background: rgba(0, 0, 0, 0.5); font-size: 0.85rem; border-top: 1px solid rgba(255,255,255,0.1); }
-        .footer b { color: #ffca3a; }
+        .footer { margin-top: auto; padding: 20px; text-align: center; background: rgba(0,0,0,0.8); width: 100%; font-size: 0.85rem; }
     </style>
 </head>
 <body>
@@ -155,11 +152,11 @@
         <h1>AUST EEE 2/1 EXAM PORTAL</h1>
     </div>
 
-    <div class="hammer-overlay">
-        <img src="thor-hammer.png" alt="Mjolnir" class="hammer-img">
-    </div>
-
     <div class="wheel-container">
+        <div class="hammer-box">
+            <img src="thor-hammer.png" alt="Mjolnir" class="hammer-img">
+        </div>
+
         <div class="wheel" id="wheelFrame">
             <div class="segment s1" onclick="loadCourse(0)"><span>EEE-2105</span></div>
             <div class="segment s2" onclick="loadCourse(1)"><span>EEE-2103</span></div>
@@ -172,19 +169,17 @@
     </div>
 
     <div id="infoCard" class="info-card">
-        <h2 id="title" style="margin:0;">Subject Name</h2>
+        <h2 id="title" style="margin:0; color: #ffca3a;">Subject</h2>
         <div class="details-grid">
-            <div class="box"><small>📅 DATE</small><span id="dateText">-</span></div>
-            <div class="box"><small>🕒 TIME</small><span id="timeText">-</span></div>
-            <div class="box"><small>🗓 DAY</small><span id="dayText">-</span></div>
-            <div class="box"><small>📍 VENUE</small><span>AUST Campus</span></div>
+            <div class="box"><small>📅 DATE</small><br><span id="dateText">-</span></div>
+            <div class="box"><small>🕒 TIME</small><br><span id="timeText">-</span></div>
+            <div class="box"><small>🗓 DAY</small><br><span id="dayText">-</span></div>
+            <div class="box"><small>📍 VENUE</small><br><span>AUST Campus</span></div>
         </div>
-        <a id="driveBtn" href="#" target="_blank" class="drive-btn">📂 OPEN MATERIALS DRIVE</a>
+        <a id="driveBtn" href="#" target="_blank" class="drive-btn">📂 MATERIALS DRIVE</a>
     </div>
 
-    <div class="footer">
-        Developed by: <b>Ratul Krishna Mojumder</b>
-    </div>
+    <div class="footer">Developed by: <b>Ratul Krishna Mojumder</b></div>
 
     <script>
         const courseData = [
@@ -197,9 +192,7 @@
 
         function loadCourse(id) {
             const course = courseData[id];
-            // Rotate the wheel to the correct segment
             document.getElementById('wheelFrame').style.transform = `rotate(${-id * 72}deg)`;
-            
             const card = document.getElementById('infoCard');
             card.style.display = 'block';
             document.getElementById('title').innerText = course.name;
@@ -211,8 +204,7 @@
         }
 
         function openRoutine() {
-            // Your existing routine modal logic can go here. For now, an alert.
-            alert("Routine information is displayed in the info card after clicking segments!");
+            alert("Subject details are updated in the card below!");
         }
     </script>
 </body>
