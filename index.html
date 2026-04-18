@@ -6,8 +6,8 @@
     <title>EEE 2.1 Exam Dashboard</title>
     <style>
         :root {
-            --lightning: #00d4ff;
-            --thor-blue: #7df9ff;
+            --lightning: #2ecc71; /* সবুজ রঙ সেট করা হয়েছে */
+            --thor-green: #00ff00;
         }
 
         body {
@@ -45,14 +45,14 @@
             .wheel-container { width: 480px; height: 480px; margin-top: 340px; }
         }
 
-        /* --- Hammer Box with Thor Lightning Effects --- */
+        /* --- Hammer Box with Green Lighting --- */
         .hammer-box {
             position: absolute;
             top: -300px; 
             left: calc(50% - 300px); 
             width: 480px; 
             height: 480px;
-            z-index: 50; /* Ensuring clickability */
+            z-index: 50; 
             pointer-events: auto;
             display: flex;
             justify-content: center;
@@ -68,24 +68,24 @@
             width: 100%;
             height: 100%;
             object-fit: contain;
-            /* Thor Power Animation */
-            animation: thor-shock 0.1s infinite alternate, floating 4s ease-in-out infinite;
+            /* গতি কমানোর জন্য 0.1s থেকে বাড়িয়ে 0.4s করা হয়েছে */
+            animation: thor-shock 0.4s infinite alternate, floating 4s ease-in-out infinite;
             filter: drop-shadow(0 0 10px var(--lightning));
         }
 
-        /* Thor Lightning Strike Effect */
+        /* Green Lightning Effect */
         @keyframes thor-shock {
             0% { 
                 filter: drop-shadow(0 0 5px var(--lightning)) brightness(1);
                 transform: translate(0, 0) scale(1);
             }
             50% { 
-                filter: drop-shadow(0 0 30px #fff) drop-shadow(0 0 50px var(--thor-blue)) brightness(1.8);
-                transform: translate(1px, -1px) scale(1.02);
+                filter: drop-shadow(0 0 25px #fff) drop-shadow(0 0 45px var(--thor-green)) brightness(1.5);
+                transform: translate(0.5px, -0.5px) scale(1.01);
             }
             100% { 
-                filter: drop-shadow(0 0 15px var(--lightning)) brightness(1.2);
-                transform: translate(-1px, 1px) scale(1);
+                filter: drop-shadow(0 0 12px var(--lightning)) brightness(1.1);
+                transform: translate(-0.5px, 0.5px) scale(1);
             }
         }
 
@@ -94,7 +94,7 @@
             50% { margin-top: -20px; }
         }
 
-        /* --- UI Rest Elements --- */
+        /* --- Wheel & Other UI --- */
         .wheel {
             position: absolute;
             width: 100%; height: 100%;
@@ -142,7 +142,6 @@
             transform: translate(-50%, -50%);
         }
 
-        /* Routine Modal Interface */
         .modal {
             display: none;
             position: fixed;
@@ -156,14 +155,8 @@
             padding: 20px 0;
         }
 
-        .modal-content {
-            width: 90%; max-width: 500px;
-            text-align: center;
-        }
-
-        .modal-title {
-            color: #ffca3a; font-size: 1.8rem; margin-bottom: 25px; font-weight: 800;
-        }
+        .modal-content { width: 90%; max-width: 500px; text-align: center; }
+        .modal-title { color: #ffca3a; font-size: 1.8rem; margin-bottom: 25px; font-weight: 800; }
 
         .routine-card {
             background: rgba(255, 255, 255, 0.08);
