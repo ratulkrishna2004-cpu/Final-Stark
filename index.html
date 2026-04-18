@@ -12,7 +12,7 @@
         body {
             margin: 0; padding: 0;
             font-family: 'Segoe UI', Arial, sans-serif;
-            background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.95)), 
+            background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.95)), 
                         url('./varsity-bg.jpg') no-repeat center center fixed;
             background-size: cover;
             color: #fff;
@@ -21,7 +21,7 @@
         }
 
         .header h1 { 
-            margin-top: 40px; 
+            margin-top: 50px; 
             font-size: 2.2rem; 
             text-align: center;
             letter-spacing: 2px;
@@ -29,19 +29,19 @@
             font-weight: 800;
         }
         
-        /* Container pushed further down to create space for hammer */
         .wheel-container {
             position: relative;
-            width: 350px; height: 350px;
-            margin-top: 180px; /* Increased margin to create space for big hammer above circle */
-            margin-bottom: 50px;
+            width: 360px; height: 360px;
+            /* Creating a massive gap (300px) between title and wheel */
+            margin-top: 250px; 
+            margin-bottom: 60px;
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
         @media (min-width: 768px) {
-            .wheel-container { width: 450px; height: 450px; margin-top: 220px; }
+            .wheel-container { width: 480px; height: 480px; margin-top: 280px; }
         }
 
         .wheel {
@@ -50,8 +50,9 @@
             border-radius: 50%;
             overflow: hidden;
             border: 8px solid rgba(255,255,255,0.2);
-            box-shadow: 0 0 40px rgba(0,0,0,0.9);
+            box-shadow: 0 0 50px rgba(0,0,0,0.9);
             transition: transform 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 5;
         }
 
         .segment {
@@ -62,6 +63,7 @@
             clip-path: polygon(0 0, 100% 0, 100% 100%);
         }
 
+        /* Segments Color */
         .s1 { background: linear-gradient(45deg, #ff5f6d, #ffc371); transform: rotate(0deg) skewY(-18deg); }
         .s2 { background: linear-gradient(45deg, #f1c40f, #f39c12); transform: rotate(72deg) skewY(-18deg); }
         .s3 { background: linear-gradient(45deg, #11998e, #38ef7d); transform: rotate(144deg) skewY(-18deg); }
@@ -72,74 +74,75 @@
             transform: skewY(18deg) rotate(-45deg);
             position: absolute;
             font-weight: 900;
-            width: 80px;
-            right: 20px; top: 45px;
+            width: 90px;
+            right: 20px; top: 50px;
             font-size: 0.9rem;
+            color: #fff;
         }
 
-        /* --- BIG Hammer positioned in the gap --- */
+        /* --- Hammer Positioned perfectly in the gap --- */
         .hammer-box {
             position: absolute;
-            top: -120px; /* Positioned above the circle center */
-            width: 280px; /* Big Size */
-            height: 280px;
-            z-index: 25;
-            pointer-events: none; /* Allows clicking segments through it */
+            /* Adjusting top value to center it in the empty space */
+            top: -240px; 
+            width: 320px; /* Made it bigger */
+            height: 320px;
+            z-index: 10;
+            pointer-events: none;
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
         @media (min-width: 768px) {
-            .hammer-box { width: 350px; height: 350px; top: -150px; }
+            .hammer-box { width: 400px; height: 400px; top: -280px; }
         }
 
         .hammer-img {
             width: 100%;
             height: 100%;
             object-fit: contain;
-            filter: drop-shadow(0 0 20px var(--lightning));
-            animation: lighting-strike 0.15s infinite alternate, hammer-hover 3s ease-in-out infinite;
+            filter: drop-shadow(0 0 25px var(--lightning));
+            animation: lighting-strike 0.2s infinite alternate, floating 3s ease-in-out infinite;
         }
 
-        /* Continuous Lighting & Hover Animation */
         @keyframes lighting-strike {
-            0% { filter: drop-shadow(0 0 10px var(--lightning)) brightness(1.1); }
-            100% { filter: drop-shadow(0 0 30px #fff) brightness(1.4); }
+            0% { filter: drop-shadow(0 0 15px var(--lightning)) brightness(1.1); }
+            100% { filter: drop-shadow(0 0 35px #fff) brightness(1.5); }
         }
 
-        @keyframes hammer-hover {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-15px) rotate(2deg); }
+        @keyframes floating {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
         }
 
         .routine-btn {
             position: absolute;
-            width: 80px; height: 80px;
+            width: 90px; height: 90px;
             background: #fff; color: #000;
-            border-radius: 50%; border: 4px solid #000;
+            border-radius: 50%; border: 5px solid #000;
             cursor: pointer; font-weight: 900;
             z-index: 30;
-            font-size: 0.7rem;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            font-size: 0.75rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
         }
 
         .info-card {
-            width: 85%; max-width: 480px;
-            padding: 20px; border-radius: 20px;
-            backdrop-filter: blur(20px);
+            width: 90%; max-width: 500px;
+            padding: 25px; border-radius: 25px;
+            backdrop-filter: blur(25px);
             text-align: center; display: none;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.7);
-            margin-bottom: 50px;
-            border: 1px solid rgba(255,255,255,0.1);
-            background: rgba(0,0,0,0.5);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+            margin-bottom: 60px;
+            border: 1px solid rgba(255,255,255,0.15);
+            background: rgba(0,0,0,0.6);
         }
 
-        .details-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 15px 0; }
-        .box { background: rgba(255,255,255,0.05); padding: 10px; border-radius: 12px; }
-        .drive-btn { display: block; padding: 15px; background: #fff; color: #000; text-decoration: none; border-radius: 30px; font-weight: 800; margin-top: 10px; }
+        .details-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 20px 0; }
+        .box { background: rgba(255,255,255,0.08); padding: 12px; border-radius: 15px; }
+        .drive-btn { display: block; padding: 18px; background: #fff; color: #000; text-decoration: none; border-radius: 40px; font-weight: 800; font-size: 1rem; }
 
-        .footer { margin-top: auto; padding: 20px; text-align: center; background: rgba(0,0,0,0.8); width: 100%; font-size: 0.85rem; }
+        .footer { margin-top: auto; padding: 20px; text-align: center; background: rgba(0,0,0,0.8); width: 100%; font-size: 0.9rem; border-top: 1px solid rgba(255,255,255,0.1); }
     </style>
 </head>
 <body>
@@ -165,14 +168,14 @@
     </div>
 
     <div id="infoCard" class="info-card">
-        <h2 id="title" style="margin:0; color: #f1c40f;">Subject</h2>
+        <h2 id="title" style="margin:0; color: #ffca3a;">Subject</h2>
         <div class="details-grid">
             <div class="box"><small>📅 DATE</small><br><span id="dateText">-</span></div>
             <div class="box"><small>🕒 TIME</small><br><span id="timeText">-</span></div>
             <div class="box"><small>🗓 DAY</small><br><span id="dayText">-</span></div>
             <div class="box"><small>📍 VENUE</small><br><span>AUST Campus</span></div>
         </div>
-        <a id="driveBtn" href="#" target="_blank" class="drive-btn">📂 MATERIALS DRIVE</a>
+        <a id="driveBtn" href="#" target="_blank" class="drive-btn">📂 OPEN MATERIALS DRIVE</a>
     </div>
 
     <div class="footer">Developed by: <b>Ratul Krishna Mojumder</b></div>
@@ -200,7 +203,7 @@
         }
 
         function openRoutine() {
-            alert("Check the Subject Card for details!");
+            alert("Subject details are updated in the card below!");
         }
     </script>
 </body>
