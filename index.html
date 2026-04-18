@@ -1,270 +1,315 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EEE 2.1 Exam Dashboard</title>
-    <style>
-        :root {
-            --glass: rgba(255, 255, 255, 0.1);
-            --border: rgba(255, 255, 255, 0.2);
-            --thor-blue: #00d4ff;
-        }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EEE 2.1 Exam Dashboard</title>
+    <style>
+        :root {
+            --glass: rgba(255, 255, 255, 0.1);
+            --border: rgba(255, 255, 255, 0.2);
+            --thor-red: #ff3333; /* Red color for the glow */
+        }
 
-        body {
-            margin: 0; padding: 0;
-            font-family: 'Segoe UI', Arial, sans-serif;
-            background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.95)), 
-                        url('varsity-bg.jpg') no-repeat center center fixed;
-            background-size: cover;
-            color: #fff;
-            display: flex; flex-direction: column; align-items: center;
-            min-height: 100vh; overflow-x: hidden;
-        }
+        body {
+            margin: 0; padding: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.85)), 
+                        url('varsity-bg.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: #fff;
+            display: flex; flex-direction: column; align-items: center;
+            min-height: 100vh; overflow-x: hidden;
+        }
 
-        .header h1 { 
-            margin-top: 50px; 
-            font-size: 2rem; 
-            text-align: center;
-            letter-spacing: 2px;
-            text-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
-        }
+        .header h1 { 
+            margin-top: 25px; 
+            font-size: 1.8rem; 
+            text-align: center;
+            letter-spacing: 1px;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+        
+        .wheel-container {
+            position: relative;
+            width: 300px; height: 300px;
+            margin: 20px 0;
+            transition: transform 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
 
-        /* মেইন কন্টেইনার যা সব কিছুকে নিচে নামিয়ে আনবে */
-        .main-container {
-            position: relative;
-            margin-top: 180px; /* টাইটেল থেকে যথেষ্ট গ্যাপ রাখা হয়েছে */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+        @media (min-width: 768px) {
+            .wheel-container { width: 380px; height: 380px; margin: 40px 0; }
+        }
 
-        /* হাতুড়ির বক্স */
-        .thor-hammer-box {
-            position: absolute;
-            top: -165px; /* হুইলের ঠিক উপরে হাতুড়ি বসানো হয়েছে */
-            z-index: 20;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+        .wheel {
+            position: relative;
+            width: 100%; height: 100%;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 6px solid var(--border);
+            box-shadow: 0 0 40px rgba(0,0,0,0.7);
+        }
 
-        .hammer-img {
-            width: 170px; /* তোমার ছবির সাইজ অনুযায়ী অ্যাডজাস্ট করা */
-            filter: drop-shadow(0 0 10px rgba(0, 212, 255, 0.5));
-            animation: lightning 3.5s infinite linear;
-            cursor: pointer;
-            transition: transform 0.3s;
-        }
+        .segment {
+            position: absolute;
+            width: 50%; height: 50%;
+            transform-origin: 100% 100%;
+            cursor: pointer;
+            clip-path: polygon(0 0, 100% 0, 100% 100%);
+        }
 
-        /* থর লাইটনিং অ্যানিমেশন */
-        @keyframes lightning {
-            0%, 88%, 100% { filter: drop-shadow(0 0 5px var(--thor-blue)) brightness(1); }
-            90% { filter: drop-shadow(0 0 35px #fff) brightness(2.5) contrast(1.2); transform: scale(1.05); }
-            92% { filter: drop-shadow(0 0 15px var(--thor-blue)) brightness(1.2); }
-            94% { filter: drop-shadow(0 0 50px #fff) brightness(3); transform: scale(1.02); }
-        }
+        .s1 { background: linear-gradient(45deg, #ff5f6d, #ffc371); transform: rotate(0deg) skewY(-18deg); }
+        .s2 { background: linear-gradient(45deg, #f1c40f, #f39c12); transform: rotate(72deg) skewY(-18deg); }
+        .s3 { background: linear-gradient(45deg, #11998e, #38ef7d); transform: rotate(144deg) skewY(-18deg); }
+        .s4 { background: linear-gradient(45deg, #00c6ff, #0072ff); transform: rotate(216deg) skewY(-18deg); }
+        .s5 { background: linear-gradient(45deg, #8e44ad, #c39bd3); transform: rotate(288deg) skewY(-18deg); }
 
-        /* Q.B বাটন স্টাইল */
-        .qb-btn {
-            margin-top: -25px; /* হাতুড়ির হ্যান্ডেলের সাথে অ্যাডজাস্ট করার জন্য */
-            background: #fff;
-            color: #000;
-            border: none;
-            padding: 10px 25px;
-            border-radius: 50px;
-            font-weight: 900;
-            font-size: 0.9rem;
-            cursor: pointer;
-            text-decoration: none;
-            box-shadow: 0 0 20px rgba(0, 212, 255, 0.6);
-            transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            z-index: 25;
-            border: 2px solid var(--thor-blue);
-            letter-spacing: 1px;
-        }
+        .segment span {
+            transform: skewY(18deg) rotate(-45deg);
+            position: absolute;
+            font-weight: 900;
+            text-align: center;
+            width: 75px;
+            right: 15px; top: 40px;
+            font-size: 0.8rem;
+        }
+        .s2 span { color: #222; }
 
-        .qb-btn:hover {
-            transform: scale(1.15);
-            background: var(--thor-blue);
-            color: #fff;
-            box-shadow: 0 0 35px var(--thor-blue);
-        }
+        .routine-btn {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80px; height: 80px;
+            background: #fff; color: #1a1a1a;
+            border-radius: 50%; border: none;
+            cursor: pointer; font-weight: 900;
+            z-index: 10; font-size: 0.65rem;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+        }
 
-        /* হুইল স্টাইল */
-        .wheel-container {
-            position: relative;
-            width: 300px; height: 300px;
-            transition: transform 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
+        .info-card {
+            width: 85%; max-width: 460px;
+            padding: 20px; border-radius: 20px;
+            backdrop-filter: blur(25px);
+            text-align: center; display: none;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+            margin-bottom: 50px;
+            border: 1px solid var(--border);
+            animation: popIn 0.5s ease;
+        }
 
-        @media (min-width: 768px) {
-            .wheel-container { width: 380px; height: 380px; }
-        }
+        @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
-        .wheel {
-            position: relative;
-            width: 100%; height: 100%;
-            border-radius: 50%;
-            overflow: hidden;
-            border: 7px solid var(--border);
-            box-shadow: 0 0 55px rgba(0,0,0,0.9);
-        }
+        .details-grid {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 12px; margin: 15px 0;
+        }
 
-        .segment {
-            position: absolute;
-            width: 50%; height: 50%;
-            transform-origin: 100% 100%;
-            cursor: pointer;
-            clip-path: polygon(0 0, 100% 0, 100% 100%);
-        }
+        .box { background: rgba(0,0,0,0.4); padding: 10px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); }
+        .box small { display: block; color: #bbb; font-size: 0.65rem; margin-bottom: 2px; }
+        .box b { font-size: 0.9rem; }
 
-        .s1 { background: linear-gradient(45deg, #ff5f6d, #ffc371); transform: rotate(0deg) skewY(-18deg); }
-        .s2 { background: linear-gradient(45deg, #f1c40f, #f39c12); transform: rotate(72deg) skewY(-18deg); }
-        .s3 { background: linear-gradient(45deg, #11998e, #38ef7d); transform: rotate(144deg) skewY(-18deg); }
-        .s4 { background: linear-gradient(45deg, #00c6ff, #0072ff); transform: rotate(216deg) skewY(-18deg); }
-        .s5 { background: linear-gradient(45deg, #8e44ad, #c39bd3); transform: rotate(288deg) skewY(-18deg); }
+        .drive-btn {
+            display: block; padding: 14px;
+            background: #fff; color: #000;
+            text-decoration: none; border-radius: 30px;
+            font-weight: bold; font-size: 0.9rem; transition: 0.3s;
+        }
+        .drive-btn:hover { background: #eee; transform: translateY(-2px); }
 
-        .segment span {
-            transform: skewY(18deg) rotate(-45deg);
-            position: absolute;
-            font-weight: 900;
-            text-align: center;
-            width: 80px;
-            right: 15px; top: 45px;
-            font-size: 0.85rem;
-        }
+        #routineModal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.96);
+            z-index: 1000;
+            overflow-y: auto;
+            padding: 30px 15px;
+        }
 
-        .routine-btn {
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            width: 85px; height: 85px;
-            background: #fff; color: #1a1a1a;
-            border-radius: 50%; border: none;
-            cursor: pointer; font-weight: 900;
-            z-index: 10; font-size: 0.7rem;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-        }
+        .modal-content { max-width: 550px; margin: 0 auto; }
 
-        /* তথ্য কার্ড */
-        .info-card {
-            width: 85%; max-width: 460px;
-            padding: 25px; border-radius: 25px;
-            backdrop-filter: blur(30px);
-            text-align: center; display: none;
-            box-shadow: 0 20px 45px rgba(0,0,0,0.7);
-            margin: 40px 0 60px 0;
-            border: 1px solid var(--border);
-            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
+        .routine-card {
+            background: rgba(255,255,255,0.08);
+            margin-bottom: 15px;
+            padding: 15px;
+            border-radius: 18px;
+            border-left: 6px solid;
+            display: flex; justify-content: space-between; align-items: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            transition: 0.3s;
+        }
+        .routine-card:hover { transform: translateX(8px); background: rgba(255,255,255,0.12); }
 
-        .details-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 20px 0; }
-        .box { background: rgba(0,0,0,0.5); padding: 12px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1); }
-        .box small { display: block; color: #00d4ff; font-size: 0.7rem; margin-bottom: 5px; font-weight: bold; }
-        .drive-btn { display: block; padding: 16px; background: #fff; color: #000; text-decoration: none; border-radius: 35px; font-weight: bold; font-size: 1rem; transition: 0.3s; }
-        
-        #routineModal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.97); z-index: 1000; overflow-y: auto; padding: 30px 15px; }
-        .modal-content { max-width: 550px; margin: 0 auto; }
-        .routine-card { background: rgba(255,255,255,0.08); margin-bottom: 15px; padding: 18px; border-radius: 20px; border-left: 6px solid; display: flex; justify-content: space-between; align-items: center; }
-        .close-btn { background: #ff4757; color: #fff; border: none; padding: 15px 40px; border-radius: 30px; margin: 30px auto; display: block; cursor: pointer; font-weight: 900; }
+        .card-left b { font-size: 1.1rem; display: block; color: #fff; }
+        .card-left span { font-size: 0.8rem; color: #aaa; }
+        .card-right { text-align: right; font-size: 0.9rem; font-weight: bold; line-height: 1.4; }
 
-        .footer { margin-top: auto; padding: 20px; width: 100%; text-align: center; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(10px); border-top: 1px solid rgba(255, 255, 255, 0.1); font-size: 0.9rem; }
-        .footer b { color: #ffca3a; }
+        .close-btn {
+            background: #ff4757; color: #fff; border: none;
+            padding: 12px 30px; border-radius: 25px;
+            margin: 20px auto; display: block; cursor: pointer;
+            font-weight: bold;
+        }
 
-        @keyframes popIn { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-    </style>
+        .footer {
+            margin-top: auto;
+            padding: 15px;
+            width: 100%;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.85rem;
+        }
+        .footer b { color: #ffca3a; letter-spacing: 0.5px; }
+
+        /* Thor Hammer Styles */
+        .thor-hammer-container {
+            position: absolute;
+            top: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: auto;
+            z-index: 1001; /* Above everything else */
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .thor-hammer-img {
+            width: 100%;
+            height: auto;
+            filter: drop-shadow(0 0 10px rgba(255, 51, 51, 0.5)); /* Initial red glow */
+        }
+
+        .qb-text-button {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--thor-red); /* Text is the red color */
+            text-transform: uppercase;
+            position: absolute;
+            bottom: 10px;
+            text-align: center;
+            width: 100%;
+            transform: rotate(-5deg); /* Slight angle for integrated look */
+            text-shadow: 
+                2px 2px 0 #000, /* Dark bevel */
+                -2px -2px 0 #000, /* Dark bevel */
+                0 0 20px var(--thor-red), /* Intense inner glow */
+                0 0 40px var(--thor-red), /* Broad red outer glow */
+                0 0 60px #ff0000; /* Extra outer red halo */
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+        }
+
+        .thor-hammer-container:hover .thor-hammer-img {
+            filter: drop-shadow(0 0 30px rgba(255, 51, 51, 1)); /* Intensified red halo on hover */
+        }
+    </style>
 </head>
 <body>
 
-    <div class="header">
-        <h1>AUST EEE 2/1 EXAM PORTAL</h1>
-    </div>
+    <div class="header">
+        <h1>AUST EEE 2/1 EXAM PORTAL</h1>
+    </div>
 
-    <div class="main-container">
-        <div class="thor-hammer-box">
-            <img src="thor-hammer.png" alt="Thor's Hammer" class="hammer-img">
-            <a href="TU_QB_DRIVE_LINK_HERE" target="_blank" class="qb-btn">Q.B</a>
-        </div>
+    <div class="wheel-container" id="wheelFrame">
+                <div class="thor-hammer-container" onclick="window.open('https://drive.google.com/drive/folders/YOUR_DRIVE_FOLDER_ID', '_blank')">
+            <img src="thor_hammer_texture.png" alt="Thor's Mjolnir" class="thor-hammer-img">
+            <button class="qb-text-button">Q.B</button>
+        </div>
+        
+        <div class="wheel">
+            <div class="segment s1" onclick="loadCourse(0)"><span>EEE-2105</span></div>
+            <div class="segment s2" onclick="loadCourse(1)"><span>EEE-2103</span></div>
+            <div class="segment s3" onclick="loadCourse(2)"><span>MATH-2103</span></div>
+            <div class="segment s4" onclick="loadCourse(3)"><span>ME-2151</span></div>
+            <div class="segment s5" onclick="loadCourse(4)"><span>HUM-2109</span></div>
+        </div>
+        <button class="routine-btn" onclick="openRoutine()">VIEW<br>ROUTINE</button>
+    </div>
 
-        <div class="wheel-container" id="wheelFrame">
-            <div class="wheel">
-                <div class="segment s1" onclick="loadCourse(0)"><span>EEE-2105</span></div>
-                <div class="segment s2" onclick="loadCourse(1)"><span>EEE-2103</span></div>
-                <div class="segment s3" onclick="loadCourse(2)"><span>MATH-2103</span></div>
-                <div class="segment s4" onclick="loadCourse(3)"><span>ME-2151</span></div>
-                <div class="segment s5" onclick="loadCourse(4)"><span>HUM-2109</span></div>
-            </div>
-            <button class="routine-btn" onclick="openRoutine()">VIEW<br>ROUTINE</button>
-        </div>
-    </div>
+    <div id="infoCard" class="info-card">
+        <h2 id="title" style="margin:0; font-size: 1.3rem; color: #fff;">Subject</h2>
+        <div class="details-grid">
+            <div class="box"><small>📅 DATE</small><span id="dateText">-</span></div>
+            <div class="box"><small>🕒 TIME</small><span id="timeText">-</span></div>
+            <div class="box"><small>🗓 DAY</small><span id="dayText">-</span></div>
+            <div class="box"><small>📍 VENUE</small><span>AUST Campus</span></div>
+        </div>
+        <a id="driveBtn" href="#" target="_blank" class="drive-btn">📂 OPEN MATERIALS DRIVE</a>
+        <br>
+        <button onclick="closeInfoCard()" class="close-btn" style="margin-top: 10px; width: auto; padding: 10px 20px;">CLOSE</button>
+    </div>
 
-    <div id="infoCard" class="info-card">
-        <h2 id="title" style="margin:0; font-size: 1.5rem; color: #fff;">Subject</h2>
-        <div class="details-grid">
-            <div class="box"><small>📅 DATE</small><span id="dateText">-</span></div>
-            <div class="box"><small>🕒 TIME</small><span id="timeText">-</span></div>
-            <div class="box"><small>🗓 DAY</small><span id="dayText">-</span></div>
-            <div class="box"><small>📍 VENUE</small><span>AUST Campus</span></div>
-        </div>
-        <a id="driveBtn" href="#" target="_blank" class="drive-btn">📂 OPEN MATERIALS DRIVE</a>
-    </div>
+    <div id="routineModal">
+        <div class="modal-content">
+            <h2 style="text-align:center; color:#ffca3a; margin-bottom: 25px;">Final Exam Routine</h2>
+            <div id="fullList"></div>
+            <button class="close-btn" onclick="closeModal()">CLOSE</button>
+        </div>
+    </div>
 
-    <div id="routineModal">
-        <div class="modal-content">
-            <h2 style="text-align:center; color:#ffca3a; margin-bottom: 25px;">Final Exam Routine</h2>
-            <div id="fullList"></div>
-            <button class="close-btn" onclick="closeModal()">CLOSE</button>
-        </div>
-    </div>
+    <div class="footer">
+        Developed by: <b>Ratul Krishna Mojumder</b>
+    </div>
 
-    <div class="footer">
-        Developed by: <b>Ratul Krishna Mojumder</b>
-    </div>
+    <script>
+        const courseData = [
+            { name: "Electrical Machineries", code: "EEE-2105", date: "May 03, 2026", time: "09:30 AM-12:00 PM", day: "Sunday", link: "https://drive.google.com/drive/folders/1VpU2gqtwiapRvBhHxeXenZraFj9seVK1?usp=drive_link", color: "#ff5f6d" },
+            { name: "Digital Circuit Design", code: "EEE-2103", date: "May 06, 2026", time: "09:30 AM-12:00 PM", day: "Wednesday", link: "https://drive.google.com/drive/folders/1rQV9WMWOJKGwlUjHBhig3fMik9SNFbIB?usp=drive_link", color: "#f1c40f" },
+            { name: "Mathematics-IV", code: "MATH-2103", date: "May 11, 2026", time: "09:30 AM-12:00 PM", day: "Monday", link: "https://drive.google.com/drive/folders/1QpfegRbmSES0cPU5A2u8ThztCIDnbQhV?usp=drive_link", color: "#2ecc71" },
+            { name: "Mechanical Eng.", code: "ME-2151", date: "May 17, 2026", time: "09:30 AM-12:00 PM", day: "Sunday", link: "https://drive.google.com/drive/folders/1lpebIYMXh4wugawWNpYKtkOnF-eMYO-0?usp=drive_link", color: "#00c6ff" },
+            { name: "Technical English", code: "HUM-2109", date: "May 20, 2026", time: "09:30 AM-12:00 PM", day: "Wednesday", link: "https://drive.google.com/drive/folders/1pikfV-sZeGvZBv_RTFtm-aUmRC9VgvR7?usp=drive_link", color: "#8e44ad" }
+        ];
 
-    <script>
-        const courseData = [
-            { name: "Electrical Machineries", code: "EEE-2105", date: "May 03, 2026", time: "09:30 AM-12:00 PM", day: "Sunday", link: "https://drive.google.com/drive/folders/1VpU2gqtwiapRvBhHxeXenZraFj9seVK1?usp=drive_link", color: "#ff5f6d" },
-            { name: "Digital Circuit Design", code: "EEE-2103", date: "May 06, 2026", time: "09:30 AM-12:00 PM", day: "Wednesday", link: "https://drive.google.com/drive/folders/1rQV9WMWOJKGwlUjHBhig3fMik9SNFbIB?usp=drive_link", color: "#f1c40f" },
-            { name: "Mathematics-IV", code: "MATH-2103", date: "May 11, 2026", time: "09:30 AM-12:00 PM", day: "Monday", link: "https://drive.google.com/drive/folders/1QpfegRbmSES0cPU5A2u8ThztCIDnbQhV?usp=drive_link", color: "#2ecc71" },
-            { name: "Mechanical Eng.", code: "ME-2151", date: "May 17, 2026", time: "09:30 AM-12:00 PM", day: "Sunday", link: "https://drive.google.com/drive/folders/1lpebIYMXh4wugawWNpYKtkOnF-eMYO-0?usp=drive_link", color: "#00c6ff" },
-            { name: "Technical English", code: "HUM-2109", date: "May 20, 2026", time: "09:30 AM-12:00 PM", day: "Wednesday", link: "https://drive.google.com/drive/folders/1pikfV-sZeGvZBv_RTFtm-aUmRC9VgvR7?usp=drive_link", color: "#8e44ad" }
-        ];
+        function loadCourse(id) {
+            const course = courseData[id];
+            document.getElementById('wheelFrame').style.transform = `rotate(${-id * 72}deg)`;
+            const card = document.getElementById('infoCard');
+            card.style.display = 'block';
+            card.style.background = `rgba(${hexToRgb(course.color)}, 0.25)`;
+            card.style.borderColor = course.color;
+            
+            document.getElementById('title').innerText = course.name;
+            document.getElementById('dateText').innerText = course.date;
+            document.getElementById('timeText').innerText = course.time;
+            document.getElementById('dayText').innerText = course.day;
+            document.getElementById('driveBtn').href = course.link;
+        }
 
-        function loadCourse(id) {
-            const course = courseData[id];
-            document.getElementById('wheelFrame').style.transform = `rotate(${-id * 72}deg)`;
-            const card = document.getElementById('infoCard');
-            card.style.display = 'block';
-            card.style.background = `rgba(${hexToRgb(course.color)}, 0.2)`;
-            card.style.borderColor = course.color;
-            document.getElementById('title').innerText = course.name;
-            document.getElementById('dateText').innerText = course.date;
-            document.getElementById('timeText').innerText = course.time;
-            document.getElementById('dayText').innerText = course.day;
-            document.getElementById('driveBtn').href = course.link;
-        }
+        function closeInfoCard() {
+            document.getElementById('infoCard').style.display = 'none';
+        }
 
-        function openRoutine() {
-            const modal = document.getElementById('routineModal');
-            const list = document.getElementById('fullList');
-            modal.style.display = 'block';
-            list.innerHTML = courseData.map(c => `
-                <div class="routine-card" style="border-left-color: ${c.color}">
-                    <div class="card-left">
-                        <b>${c.name}</b>
-                        <span>${c.code} | ${c.time}</span>
-                    </div>
-                    <div class="card-right">${c.date}<br><span style="color:#aaa; font-weight:normal;">${c.day}</span></div>
-                </div>
-            `).join('');
-        }
+        function openRoutine() {
+            const modal = document.getElementById('routineModal');
+            const list = document.getElementById('fullList');
+            modal.style.display = 'block';
+            list.innerHTML = courseData.map(c => `
+                <div class="routine-card" style="border-left-color: ${c.color}">
+                    <div class="card-left">
+                        <b>${c.name}</b>
+                        <span>${c.code} | ${c.time}</span>
+                    </div>
+                    <div class="card-right">
+                        ${c.date}<br><span style="color:#aaa; font-weight:normal;">${c.day}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
 
-        function closeModal() { document.getElementById('routineModal').style.display = 'none'; }
-        function hexToRgb(hex) {
-            var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-            return result ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}` : "255,255,255";
-        }
-    </script>
+        function closeModal() { document.getElementById('routineModal').style.display = 'none'; }
+
+        function hexToRgb(hex) {
+            var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            return result ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}` : "255,255,255";
+        }
+    </script>
 </body>
 </html>
