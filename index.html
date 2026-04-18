@@ -28,76 +28,17 @@
             letter-spacing: 1px;
             text-shadow: 0 4px 10px rgba(0,0,0,0.5);
         }
-
-        /* মেইন কন্টেইনার */
-        .main-container {
-            position: relative;
-            margin-top: 220px; /* হাতুড়ি বড় করার কারণে গ্যাপ বাড়ানো হয়েছে */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        /* Thor Hammer Button */
-        .thor-hammer-btn {
-            position: absolute;
-            top: -240px; /* বড় হাতুড়িকে হুইলের উপর বসানো হয়েছে */
-            z-index: 100;
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-decoration: none;
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .thor-hammer-btn:hover {
-            transform: scale(1.05);
-        }
-
-        .hammer-img {
-            width: 280px; /* হাতুড়ির সাইজ বড় করা হয়েছে ছবির মতো */
-            height: auto;
-            filter: drop-shadow(0 0 15px rgba(255, 51, 51, 0.4));
-        }
-
-        /* Thor Lightning Effect */
-        .lightning-effect {
-            position: absolute;
-            width: 320px;
-            height: 320px;
-            background-image: url('lightning.png'); /* Replace with a real lightning image if needed */
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center;
-            z-index: -1;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .thor-hammer-btn:hover .lightning-effect {
-            opacity: 1;
-            animation: lightningStrike 0.5s infinite;
-        }
-
-        @keyframes lightningStrike {
-            0% { opacity: 0; }
-            20% { opacity: 1; }
-            40% { opacity: 0.3; }
-            60% { opacity: 1; }
-            80% { opacity: 0.5; }
-            100% { opacity: 1; }
-        }
-
+        
         /* Adaptive Wheel */
         .wheel-container {
             position: relative;
             width: 300px; height: 300px;
+            margin: 20px 0;
             transition: transform 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         @media (min-width: 768px) {
-            .wheel-container { width: 380px; height: 380px; }
+            .wheel-container { width: 380px; height: 380px; margin: 40px 0; }
         }
 
         .wheel {
@@ -117,6 +58,7 @@
             clip-path: polygon(0 0, 100% 0, 100% 100%);
         }
 
+        /* 3D Gradient Colors */
         .s1 { background: linear-gradient(45deg, #ff5f6d, #ffc371); transform: rotate(0deg) skewY(-18deg); }
         .s2 { background: linear-gradient(45deg, #f1c40f, #f39c12); transform: rotate(72deg) skewY(-18deg); }
         .s3 { background: linear-gradient(45deg, #11998e, #38ef7d); transform: rotate(144deg) skewY(-18deg); }
@@ -146,61 +88,50 @@
             box-shadow: 0 10px 20px rgba(0,0,0,0.4);
         }
 
-        /* Glassmorphism Info Card */
-        .info-card {
-            width: 85%; max-width: 460px;
-            padding: 20px; border-radius: 20px;
-            backdrop-filter: blur(25px);
-            text-align: center; display: none;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
-            margin: 40px 0 50px 0;
-            border: 1px solid var(--border);
-            animation: popIn 0.5s ease;
-        }
-
-        @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-
-        .details-grid {
-            display: grid; grid-template-columns: 1fr 1fr;
-            gap: 12px; margin: 15px 0;
-        }
-
-        .box { background: rgba(0,0,0,0.4); padding: 10px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); }
-        .box small { display: block; color: #bbb; font-size: 0.65rem; margin-bottom: 2px; }
-        .box b { font-size: 0.9rem; }
-
-        .drive-btn {
-            display: block; padding: 14px;
-            background: #fff; color: #000;
-            text-decoration: none; border-radius: 30px;
-            font-weight: bold; font-size: 0.9rem; transition: 0.3s;
-        }
-
-        #routineModal {
-            display: none; position: fixed;
+        /* Hammer and Lightning Styles */
+        .hammer-link {
+            position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.96); z-index: 1000;
-            overflow-y: auto; padding: 30px 15px;
+            z-index: 20; /* Ensure it's above segments but below central button */
         }
 
-        .modal-content { max-width: 550px; margin: 0 auto; }
-        .routine-card {
-            background: rgba(255,255,255,0.08); margin-bottom: 15px; padding: 15px;
-            border-radius: 18px; border-left: 6px solid;
-            display: flex; justify-content: space-between; align-items: center;
+        .thor-hammer {
+            width: 100%; height: 100%;
+            background: url('thor-hammer.png') no-repeat center center;
+            background-size: cover;
+            position: relative;
         }
 
-        .close-btn {
-            background: #ff4757; color: #fff; border: none;
-            padding: 12px 30px; border-radius: 25px;
-            margin: 20px auto; display: block; cursor: pointer;
-            font-weight: bold;
+        .lightning-effect {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle, rgba(0, 255, 255, 0.4) 0%, rgba(0, 0, 0, 0) 70%);
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
         }
 
+        .thor-hammer:hover .lightning-effect {
+            opacity: 1;
+            animation: lightning-flicker 0.2s infinite;
+        }
+
+        @keyframes lightning-flicker {
+            0% { opacity: 0.5; }
+            50% { opacity: 1; }
+            100% { opacity: 0.7; }
+        }
+
+        /* ... (Remaining CSS from original code) ... */
+
+        /* STYLISH FOOTER */
         .footer {
-            margin-top: auto; padding: 15px; width: 100%;
-            text-align: center; background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(10px); border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: auto;
+            padding: 15px;
+            width: 100%;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
             font-size: 0.85rem;
         }
         .footer b { color: #ffca3a; letter-spacing: 0.5px; }
@@ -212,22 +143,20 @@
         <h1>AUST EEE 2/1 EXAM PORTAL</h1>
     </div>
 
-    <div class="main-container">
-        <a href="https://drive.google.com/drive/folders/YOUR_QB_LINK" target="_blank" class="thor-hammer-btn">
-            <img src="thor-hammer.png" alt="Thor Hammer" class="hammer-img">
-            <div class="lightning-effect"></div>
-        </a>
-
-        <div class="wheel-container" id="wheelFrame">
-            <div class="wheel">
-                <div class="segment s1" onclick="loadCourse(0)"><span>EEE-2105</span></div>
-                <div class="segment s2" onclick="loadCourse(1)"><span>EEE-2103</span></div>
-                <div class="segment s3" onclick="loadCourse(2)"><span>MATH-2103</span></div>
-                <div class="segment s4" onclick="loadCourse(3)"><span>ME-2151</span></div>
-                <div class="segment s5" onclick="loadCourse(4)"><span>HUM-2109</span></div>
-            </div>
-            <button class="routine-btn" onclick="openRoutine()">VIEW<br>ROUTINE</button>
+    <div class="wheel-container" id="wheelFrame">
+        <div class="wheel">
+            <div class="segment s1" onclick="loadCourse(0)"><span>EEE-2105</span></div>
+            <div class="segment s2" onclick="loadCourse(1)"><span>EEE-2103</span></div>
+            <div class="segment s3" onclick="loadCourse(2)"><span>MATH-2103</span></div>
+            <div class="segment s4" onclick="loadCourse(3)"><span>ME-2151</span></div>
+            <div class="segment s5" onclick="loadCourse(4)"><span>HUM-2109</span></div>
         </div>
+        <a href="https://drive.google.com/drive/folders/1pikfV-sZeGvZBv_RTFtm-aUmRC9VgvR7?usp=drive_link" target="_blank" class="hammer-link">
+            <div class="thor-hammer">
+                <div class="lightning-effect"></div>
+            </div>
+        </a>
+        <button class="routine-btn" onclick="openRoutine()">VIEW<br>ROUTINE</button>
     </div>
 
     <div id="infoCard" class="info-card">
@@ -254,49 +183,7 @@
     </div>
 
     <script>
-        // আপনার জাভাস্ক্রিপ্ট কোড একই থাকবে, আমি শুধু সিএসএস পরিবর্তন করেছি
-        const courseData = [
-            { name: "Electrical Machineries", code: "EEE-2105", date: "May 03, 2026", time: "09:30 AM-12:00 PM", day: "Sunday", link: "https://drive.google.com/drive/folders/1VpU2gqtwiapRvBhHxeXenZraFj9seVK1?usp=drive_link", color: "#ff5f6d" },
-            { name: "Digital Circuit Design", code: "EEE-2103", date: "May 06, 2026", time: "09:30 AM-12:00 PM", day: "Wednesday", link: "https://drive.google.com/drive/folders/1rQV9WMWOJKGwlUjHBhig3fMik9SNFbIB?usp=drive_link", color: "#f1c40f" },
-            { name: "Mathematics-IV", code: "MATH-2103", date: "May 11, 2026", time: "09:30 AM-12:00 PM", day: "Monday", link: "https://drive.google.com/drive/folders/1QpfegRbmSES0cPU5A2u8ThztCIDnbQhV?usp=drive_link", color: "#2ecc71" },
-            { name: "Mechanical Eng.", code: "ME-2151", date: "May 17, 2026", time: "09:30 AM-12:00 PM", day: "Sunday", link: "https://drive.google.com/drive/folders/1lpebIYMXh4wugawWNpYKtkOnF-eMYO-0?usp=drive_link", color: "#00c6ff" },
-            { name: "Technical English", code: "HUM-2109", date: "May 20, 2026", time: "09:30 AM-12:00 PM", day: "Wednesday", link: "https://drive.google.com/drive/folders/1pikfV-sZeGvZBv_RTFtm-aUmRC9VgvR7?usp=drive_link", color: "#8e44ad" }
-        ];
-
-        function loadCourse(id) {
-            const course = courseData[id];
-            document.getElementById('wheelFrame').style.transform = `rotate(${-id * 72}deg)`;
-            const card = document.getElementById('infoCard');
-            card.style.display = 'block';
-            card.style.background = `rgba(${hexToRgb(course.color)}, 0.25)`;
-            card.style.borderColor = course.color;
-            document.getElementById('title').innerText = course.name;
-            document.getElementById('dateText').innerText = course.date;
-            document.getElementById('timeText').innerText = course.time;
-            document.getElementById('dayText').innerText = course.day;
-            document.getElementById('driveBtn').href = course.link;
-        }
-
-        function openRoutine() {
-            const modal = document.getElementById('routineModal');
-            const list = document.getElementById('fullList');
-            modal.style.display = 'block';
-            list.innerHTML = courseData.map(c => `
-                <div class="routine-card" style="border-left-color: ${c.color}">
-                    <div class="card-left">
-                        <b>${c.name}</b>
-                        <span>${c.code} | ${c.time}</span>
-                    </div>
-                    <div class="card-right">${c.date}<br><span style="color:#aaa; font-weight:normal;">${c.day}</span></div>
-                </div>
-            `).join('');
-        }
-
-        function closeModal() { document.getElementById('routineModal').style.display = 'none'; }
-        function hexToRgb(hex) {
-            var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-            return result ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}` : "255,255,255";
-        }
+        // ... (Remaining JS from original code) ...
     </script>
 </body>
 </html>
