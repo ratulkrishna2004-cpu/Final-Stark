@@ -6,7 +6,7 @@
     <title>EEE 2.1 Exam Dashboard</title>
     <style>
         :root {
-            --lightning: #2ecc71; /* সবুজ রঙ সেট করা হয়েছে */
+            --lightning: #2ecc71;
             --thor-green: #00ff00;
         }
 
@@ -34,7 +34,7 @@
         .wheel-container {
             position: relative;
             width: 360px; height: 360px;
-            margin-top: 290px; 
+            margin-top: 350px; 
             margin-bottom: 60px;
             display: flex;
             justify-content: center;
@@ -42,18 +42,18 @@
         }
 
         @media (min-width: 768px) {
-            .wheel-container { width: 480px; height: 480px; margin-top: 340px; }
+            .wheel-container { width: 480px; height: 480px; margin-top: 400px; }
         }
 
-        /* --- Hammer Box with Green Lighting --- */
         .hammer-box {
             position: absolute;
-            top: -300px; 
-            left: calc(50% - 300px); 
-            width: 480px; 
-            height: 480px;
+            top: -420px; 
+            left: 50%; 
+            transform: translateX(-60%); 
+            width: 390px; 
+            height: 390px;
             z-index: 50; 
-            pointer-events: auto;
+            pointer-events: auto; 
             display: flex;
             justify-content: center;
             align-items: center;
@@ -61,40 +61,28 @@
         }
 
         @media (min-width: 768px) {
-            .hammer-box { width: 550px; height: 550px; top: -370px; left: calc(50% - 350px); }
+            .hammer-box { width: 430px; height: 430px; top: -520px; transform: translateX(-60%); }
         }
 
         .hammer-img {
             width: 100%;
             height: 100%;
             object-fit: contain;
-            /* গতি কমানোর জন্য 0.1s থেকে বাড়িয়ে 0.4s করা হয়েছে */
             animation: thor-shock 0.4s infinite alternate, floating 4s ease-in-out infinite;
             filter: drop-shadow(0 0 10px var(--lightning));
         }
 
-        /* Green Lightning Effect */
         @keyframes thor-shock {
-            0% { 
-                filter: drop-shadow(0 0 5px var(--lightning)) brightness(1);
-                transform: translate(0, 0) scale(1);
-            }
-            50% { 
-                filter: drop-shadow(0 0 25px #fff) drop-shadow(0 0 45px var(--thor-green)) brightness(1.5);
-                transform: translate(0.5px, -0.5px) scale(1.01);
-            }
-            100% { 
-                filter: drop-shadow(0 0 12px var(--lightning)) brightness(1.1);
-                transform: translate(-0.5px, 0.5px) scale(1);
-            }
+            0% { filter: drop-shadow(0 0 5px var(--lightning)) brightness(1); transform: scale(1); }
+            50% { filter: drop-shadow(0 0 25px #fff) drop-shadow(0 0 45px var(--thor-green)) brightness(1.5); transform: scale(1.02); }
+            100% { filter: drop-shadow(0 0 12px var(--lightning)) brightness(1.1); transform: scale(1); }
         }
 
         @keyframes floating {
-            0%, 100% { margin-top: 0; }
-            50% { margin-top: -20px; }
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
         }
 
-        /* --- Wheel & Other UI --- */
         .wheel {
             position: absolute;
             width: 100%; height: 100%;
@@ -143,66 +131,66 @@
         }
 
         .modal {
-            display: none;
-            position: fixed;
-            z-index: 100;
-            left: 0; top: 0;
-            width: 100%; height: 100%;
-            background: rgba(0,0,0,0.95);
-            backdrop-filter: blur(15px);
-            justify-content: center; align-items: center;
-            overflow-y: auto;
-            padding: 20px 0;
+            display: none; position: fixed; z-index: 100;
+            left: 0; top: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.92); backdrop-filter: blur(10px);
+            justify-content: center; align-items: center; padding: 20px 0;
         }
-
         .modal-content { width: 90%; max-width: 500px; text-align: center; }
         .modal-title { color: #ffca3a; font-size: 1.8rem; margin-bottom: 25px; font-weight: 800; }
-
+        
         .routine-card {
-            background: rgba(255, 255, 255, 0.08);
-            margin-bottom: 15px;
-            padding: 15px 20px;
-            border-radius: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            text-align: left;
-            border-left: 6px solid;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-            transition: transform 0.3s;
+            background: #1a1a1a; margin-bottom: 15px;
+            padding: 15px 20px; border-radius: 20px; display: flex;
+            justify-content: space-between; align-items: center; text-align: left;
+            border-left: 6px solid; box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            border-top: 1px solid rgba(255,255,255,0.05);
         }
-
         .card-left h3 { margin: 0; font-size: 1.1rem; color: #fff; }
         .card-left p { margin: 5px 0 0; font-size: 0.8rem; color: rgba(255,255,255,0.6); }
         .card-right { text-align: right; }
         .card-right .date { font-weight: bold; font-size: 0.9rem; color: #fff; }
         .card-right .day { font-size: 0.8rem; color: rgba(255,255,255,0.5); }
 
-        .close-btn-round {
-            margin-top: 20px;
-            padding: 12px 40px;
-            background: #ff4757;
-            color: #fff;
-            border: none;
-            border-radius: 30px;
-            font-weight: 900;
-            cursor: pointer;
+        .close-btn {
+            margin-top: 20px; padding: 12px 60px; background: #ff4757; color: #fff;
+            border: none; border-radius: 30px; font-weight: 900; cursor: pointer;
+            text-transform: uppercase; letter-spacing: 1px;
         }
 
         .info-card {
-            width: 85%; max-width: 500px;
-            padding: 25px; border-radius: 25px;
-            backdrop-filter: blur(20px);
-            text-align: center; display: none;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
-            margin-bottom: 60px;
-            border: 1px solid rgba(255,255,255,0.15);
-            background: rgba(0,0,0,0.7);
+            width: 85%; max-width: 500px; padding: 25px; border-radius: 25px;
+            backdrop-filter: blur(20px); text-align: center; display: none;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8); margin-bottom: 60px;
+            background: rgba(60, 40, 40, 0.8); border: 2px solid;
+        }
+        .details-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0; }
+        .box { background: rgba(0,0,0,0.4); padding: 12px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.05); }
+        .box small { color: #aaa; display: block; margin-bottom: 5px; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1px; }
+        .box span { font-weight: 700; font-size: 0.95rem; }
+        
+        .drive-btn { 
+            display: flex; justify-content: center; align-items: center; gap: 8px;
+            padding: 16px; background: #fff; color: #000; text-decoration: none; 
+            border-radius: 40px; font-weight: 800; font-size: 0.9rem;
+            transition: transform 0.2s;
+        }
+        .drive-btn:active { transform: scale(0.95); }
+
+        /* --- View Counter Styling --- */
+        .view-counter {
+            background: rgba(0,0,0,0.5);
+            padding: 10px 20px;
+            border-radius: 20px;
+            margin-bottom: 10px;
+            border: 1px solid var(--thor-green);
+            color: var(--thor-green);
+            font-weight: bold;
+            font-size: 0.9rem;
+            display: inline-block;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.2);
         }
 
-        .details-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0; }
-        .box { background: rgba(255,255,255,0.05); padding: 12px; border-radius: 15px; }
-        .drive-btn { display: block; padding: 16px; background: #fff; color: #000; text-decoration: none; border-radius: 40px; font-weight: 800; }
         .footer { margin-top: auto; padding: 20px; text-align: center; background: rgba(0,0,0,0.8); width: 100%; font-size: 0.9rem; }
     </style>
 </head>
@@ -228,26 +216,31 @@
         <button class="routine-btn" onclick="openRoutine()">VIEW<br>ROUTINE</button>
     </div>
 
-    <div id="routineModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-title">Final Exam Routine</div>
-            <div id="cardList"></div>
-            <button class="close-btn-round" onclick="closeRoutine()">CLOSE</button>
-        </div>
-    </div>
-
     <div id="infoCard" class="info-card">
-        <h2 id="title" style="margin:0; color: #ffca3a;">Subject</h2>
+        <h2 id="title" style="margin:0; color: #fff; font-size: 1.6rem; font-weight: 800;">Subject Title</h2>
         <div class="details-grid">
-            <div class="box"><small>📅 DATE</small><br><span id="dateText">-</span></div>
-            <div class="box"><small>🕒 TIME</small><br><span id="timeText">-</span></div>
-            <div class="box"><small>🗓 DAY</small><br><span id="dayText">-</span></div>
-            <div class="box"><small>📍 VENUE</small><br><span>AUST Campus</span></div>
+            <div class="box"><small>📅 DATE</small><span id="dateText">-</span></div>
+            <div class="box"><small>🕒 TIME</small><span id="timeText">-</span></div>
+            <div class="box"><small>🗓 DAY</small><span id="dayText">-</span></div>
+            <div class="box"><small>📍 VENUE</small><span>AUST Campus</span></div>
         </div>
         <a id="driveBtn" href="#" target="_blank" class="drive-btn">📂 OPEN MATERIALS DRIVE</a>
     </div>
 
-    <div class="footer">Developed by: <b>Ratul Krishna Mojumder</b></div>
+    <div id="routineModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-title">Final Exam Routine</div>
+            <div id="cardList"></div>
+            <button class="close-btn" onclick="closeRoutine()">CLOSE</button>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="view-counter">
+            👁 Total Portal Views: <span id="count">...</span>
+        </div>
+        <div>Developed by: <b>Ratul Krishna Mojumder</b></div>
+    </div>
 
     <script>
         const courseData = [
@@ -263,12 +256,16 @@
             document.getElementById('wheelFrame').style.transform = `rotate(${-id * 72}deg)`;
             const card = document.getElementById('infoCard');
             card.style.display = 'block';
+            card.style.borderColor = course.color;
+            card.style.background = `linear-gradient(rgba(30, 20, 20, 0.9), rgba(10, 10, 10, 0.95))`;
+            
             document.getElementById('title').innerText = course.name;
             document.getElementById('dateText').innerText = course.date;
             document.getElementById('timeText').innerText = course.time;
             document.getElementById('dayText').innerText = course.day;
             document.getElementById('driveBtn').href = course.link;
-            card.style.borderColor = course.color;
+            
+            card.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
 
         function openRoutine() {
@@ -295,6 +292,23 @@
         function closeRoutine() {
             document.getElementById('routineModal').style.display = 'none';
         }
+
+        // --- View Counter Logic ---
+        async function updateViewCount() {
+            try {
+                // Hitting the countapi-v2.vercel.app as a stable alternative
+                const response = await fetch('https://api.countapi.xyz/hit/ratul-aust-eee-21/visits');
+                const data = await response.json();
+                document.getElementById('count').innerText = data.value;
+            } catch (error) {
+                console.log("Counter Error:", error);
+                document.getElementById('count').innerText = "Loading...";
+            }
+        }
+
+        // Initialize Counter
+        updateViewCount();
+
     </script>
 </body>
 </html>
